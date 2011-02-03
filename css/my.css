@@ -1,0 +1,91 @@
+/* 
+    Document   : my
+    Created on : 18 Aug, 2010, 10:10:21 PM
+    Author     : Chetan
+    Description:
+        HealthCare Application Stylesheet
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+form label {
+	display: block;
+	margin-left: 15px;
+	padding-bottom: 10px;
+}
+
+form input {
+	margin: 0 0 20px 15px;
+}
+
+form input[type="submit"] {
+	display: block;
+}
+
+label {
+	display:block;
+	padding-bottom: 15px;
+}
+
+.form-element-submit{
+     margin-top: 20px;
+}
+
+.form-column-left {
+    float: left;
+}
+.form-column-right {
+    float:right;
+}
+
+.success, .error {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding: 8px 8px 8px 45px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('../images/success.png');
+    background-repeat: none;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../images/error.png');
+    list-style: none;
+}
+
+.view-table{
+    width: 700px;
+    margin-bottom: 25px;
+}
+.view-table th {
+    border-bottom:2px solid #6678B1;
+    color:#003399;
+    font-size:14px;
+    font-weight:normal;
+    padding:10px 8px;
+}
+
+.view-table td {
+    border-bottom:1px solid #CCCCCC;
+    color:#666699;
+    padding:6px 8px;
+	text-align: center;
+}
+
+h3.meta {
+    padding-bottom: 5px;
+    border-bottom: #BBBBBB 1px solid;
+    font-size: 19px;
+    line-height: 15px;
+}
