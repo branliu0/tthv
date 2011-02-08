@@ -20,6 +20,7 @@ class Model_Appointment extends Model {
 		$data['child_name'] = $post['child_name'];
 		$data['case_id'] = $post['case_id'];
 
+		$now = new DateTime("now");
 		foreach(self::$child_appts as $appt) {
 			$birth_date = new DateTime($post['birth_date']);
 			$data['message'] = preg_replace("/%appt_name%/", $appt['name'], self::MESSAGE);
@@ -28,6 +29,10 @@ class Model_Appointment extends Model {
 			}
 			else {
 				$data['date'] = $birth_date->sub(DateInterval::createFromDateString($appt['interval']));
+			}
+			// Don't add appointments that are for the past.
+			if($data['date'] < $now) {
+				continue;
 			}
 			$data['date'] = $data['date']->getTimestamp();
 			$this->add_appointment($data);
