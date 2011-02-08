@@ -11,3 +11,4 @@
 2011-02-03 01:27:10 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: case/phc/index.php ~ SYSPATH\classes\kohana\request.php [ 676 ]
 2011-02-03 01:29:35 --- ERROR: ErrorException [ 4096 ]: Argument 3 passed to Kohana_Validate::rule() must be an array, string given, called in C:\xampp\htdocs\TTHV\application\classes\controller\case.php on line 39 and defined ~ SYSPATH\classes\kohana\validate.php [ 660 ]
 2011-02-03 01:29:54 --- ERROR: ErrorException [ 2 ]: preg_match() [function.preg-match]: Unknown modifier '+' ~ SYSPATH\classes\kohana\validate.php [ 50 ]
+2011-02-03 14:41:44 --- ERROR: ReflectionException [ -1 ]: Class controller_tthv does not exist ~ SYSPATH\classes\kohana\request.php [ 1178 ]
