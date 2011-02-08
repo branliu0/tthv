@@ -7,7 +7,9 @@
 	<?php echo html::style('css/style.css', array('media' => 'screen')); ?>
 	<?php echo html::style('css/my.css', array('media' => 'screen')); ?>
 	<?php echo html::style('css/date.css', array('media' => 'screen')); ?>
-	<?php echo html::script('js/jquery-1.3.2.min.js'); ?>
+	<?php echo html::style('css/ui-lightness/jquery-ui-1.8.9.custom.css', array('media' => 'screen')); ?>
+	<?php echo html::script('js/jquery-1.4.4.min.js'); ?>
+	<?php echo html::script('js/jquery-ui-1.8.9.custom.min.js'); ?>
 	<?php echo html::script('js/date.js'); ?>
 </head>
 <body>

@@ -2,7 +2,7 @@
 RewriteEngine On
 
 # Installation directory
-RewriteBase /TTHV/
+RewriteBase /tthv/
 
 # Protect hidden files from being viewed
 <Files .*>
