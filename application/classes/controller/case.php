@@ -18,21 +18,27 @@ class Controller_Case extends Controller_Template {
 	}
 
 	public function action_view($id) {
+		$appts = Model::factory('appointment');
+		$cases = Model::factory('case');
+
 		$post = Validate::factory($_POST);
 		$post->filter(TRUE, 'trim');
 		$post->rule('child_name', 'not_empty');
 		$post->rule('birth_date', 'not_empty');
 		$post->rule('birth_date', 'date');
+
 		if ($post->check()) {
-			echo "PASSED TESTS!";
+			$post['case_id'] = $id;
+			$appts->add_child($post);
 		}
 
 		$errors = $post->errors('validate');
 
-		$cases = Model::factory('case');
 		$case = $cases->select_by_id($id);
+		$appointments = $appts->select_by_case_id($id);
 		$this->template->content = View::factory('case/view')
 			->bind('case', $case)
+			->bind('appts', $appointments)
 			->bind('post', $post)
 			->bind('errors', $errors);
 	}

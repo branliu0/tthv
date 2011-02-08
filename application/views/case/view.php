@@ -32,6 +32,26 @@
 		echo form::close();
 		?>
 	</div>
+
+	<div class="entry">
+		<h3 class="title">Upcoming Appointments</h3>
+		<table class="view-table">
+			<thead><tr>
+				<th>Date</th>
+				<th>Child Name</th>
+				<th>Message</th>
+			</tr></thead>
+			<tbody>
+			<?php foreach($appts as $appt): ?>
+				<tr><td><?php echo date('M j, Y', $appt['date']); ?></td>
+				<td><?php echo $appt['child_name']; ?></td>
+				<td><?php echo $appt['message']; ?></td>
+				<td><?php echo html::anchor("appointment/delete/{$appt['case_id']}/{$appt['id']}", 
+					html::image('images/delete.png', array('height' => '20px'))); ?></td></tr>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <script>
