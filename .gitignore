@@ -1,0 +1,4 @@
+*.swp
+application/logs/*
+application/bootstrap.php
+application/config/*
