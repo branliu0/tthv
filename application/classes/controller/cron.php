@@ -6,9 +6,10 @@ class Controller_Cron extends Controller {
     $appts = $model->select_all();
 
     $start = new DateTime();
-    $start->add(DateInterval::createFromDateString('7 days'));
-    $end = $start->add(DateInterval::createFromDateString('1 days'));
+    $start->add(DateInterval::createFromDateString('6 days'));
     $start = $start->getTimestamp();
+    $end = new DateTime();
+    $end = $end->add(DateInterval::createFromDateString('7 days'));
     $end = $end->getTimestamp();
 
     foreach($appts as $appt) {
@@ -23,7 +24,7 @@ class Controller_Cron extends Controller {
 
   private function sendReminder($appt) {
     $now = new DateTime();
-    $fp = fopen("/home/brandonkliu/public_html/tthv/application/logs/reminders.txt", "w+");
+    $fp = fopen("/home/brandonkliu/public_html/tthv/application/logs/reminders.txt", "a");
     $output = "Message: \"{$appt['message']}\" sent {$now->format("M j, Y")}";
     fwrite($fp, $output);
     echo $output;
