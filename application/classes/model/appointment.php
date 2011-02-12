@@ -13,7 +13,22 @@ class Model_Appointment extends Model {
 			"name" => "Oral Polio, DPT, Hepatitis B",
 			"interval" => "6 weeks",
 			"after" => true
-		)
+    ),
+    array(
+      "name" => "Oral Polio, DPT, Hepatitis B",
+      "interval" => "10 weeks",
+      "after" => true
+    ),
+    array(
+      "name" => "Oral Polio, DPT, Hepatitis B",
+      "interval" => "14 weeks",
+      "after" => true
+    ),
+    array(
+      "name" => "Measles",
+      "interval" => "10 months",
+      "after" => true
+    )
 	);
 
 	public function add_child($post) {
@@ -23,19 +38,24 @@ class Model_Appointment extends Model {
 		$now = new DateTime("now");
 		foreach(self::$child_appts as $appt) {
 			$birth_date = new DateTime($post['birth_date']);
+
+      // Calculate the date of the appointment
 			if($appt['after']) {
 				$data['date'] = $birth_date->add(DateInterval::createFromDateSTring($appt['interval']));
 			}
 			else {
 				$data['date'] = $birth_date->sub(DateInterval::createFromDateString($appt['interval']));
 			}
+
 			// Don't add appointments that are for the past.
 			if($data['date'] < $now) {
 				continue;
 			}
+      // String format the message
 			$data['message'] = preg_replace("/%appt_name%/", $appt['name'], self::MESSAGE);
 			$data['message'] = preg_replace("/%child_name%/", $data['child_name'], $data['message']);
 			$data['message'] = preg_replace("/%date%/", $data['date']->format("M j, Y"), $data['message']);
+
 			$data['date'] = $data['date']->getTimestamp();
 			$this->add_appointment($data);
 		}
@@ -46,8 +66,9 @@ class Model_Appointment extends Model {
 	}
 
 	public function select_by_case_id($id) {
-		return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE case_id=:case_id')
+		return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE case_id=:case_id AND date > :now ORDER BY date ASC')
 			->param(':case_id', $id)
+      ->param(':now', time())
 			->execute();
 	}
 

@@ -23,7 +23,7 @@
 		echo form::open();
 
 		echo form::label('child_name', 'Child Name');
-		echo form::input('child_name', $post['child_name'] OR "");
+		echo form::input('child_name');
 
 		echo form::label('birth_date', 'Birth Date (Actual or Expected)');
 		echo form::input('birth_date', NULL, array('id' => 'birth_date'));
