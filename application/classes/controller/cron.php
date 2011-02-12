@@ -26,7 +26,7 @@ class Controller_Cron extends Controller {
     $now = new DateTime();
     $fp = fopen("/home/brandonkliu/public_html/tthv/application/logs/reminders.txt", "a");
     $output = "Message: \"{$appt['message']}\" sent {$now->format("M j, Y")}";
-    fwrite($fp, $output);
+    fwrite($fp, $output . "\n");
     echo $output;
 
     //$this->sendSMS($appt);
