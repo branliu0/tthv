@@ -9,6 +9,7 @@
 
 	<div class="entry">
 		<h3 class="title">Add Child</h3>
+
 		<?php if ($errors): ?>
 		<div class="error">
 			<ul>
@@ -34,7 +35,9 @@
 	</div>
 
 	<div class="entry">
-		<h3 class="title">Upcoming Appointments</h3>
+  <h3 class="title">Upcoming Appointments <?php echo html::anchor("appointment/add/{$case['id']}", html::image('images/add.png',
+    array('height' => '20px'))); ?></h3>
+
 		<table class="view-table">
 			<thead><tr>
 				<th>Date</th>

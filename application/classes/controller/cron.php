@@ -6,10 +6,10 @@ class Controller_Cron extends Controller {
     $appts = $model->select_all();
 
     $start = new DateTime();
-    $start->add(DateInterval::createFromDateString('6 days'));
+    $start->add(DateInterval::createFromDateString('3 days'));
     $start = $start->getTimestamp();
     $end = new DateTime();
-    $end = $end->add(DateInterval::createFromDateString('7 days'));
+    $end = $end->add(DateInterval::createFromDateString('4 days'));
     $end = $end->getTimestamp();
 
     foreach($appts as $appt) {
