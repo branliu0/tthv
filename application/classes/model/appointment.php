@@ -72,6 +72,12 @@ class Model_Appointment extends Model {
 			->execute();
 	}
 
+  public function select_all() {
+    return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE date > :now ORDER BY date ASC')
+      ->param(':now', time())
+      ->execute();
+  }
+
 	public function delete_appointment($id) {
 		return DB::query(Database::DELETE, 'DELETE FROM appointments WHERE id=:id LIMIT 1')
 			->param(':id', $id)
