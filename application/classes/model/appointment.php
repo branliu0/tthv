@@ -2,7 +2,7 @@
 
 class Model_Appointment extends Model {
 
-	const MESSAGE = "You have an appointment for %appt_name% in one week";
+	const MESSAGE = "%child_name% has an appointment for %appt_name% on %date%";
 	private static $child_appts = array(
 		array(
 			"name" => "Child Birth",
@@ -23,7 +23,6 @@ class Model_Appointment extends Model {
 		$now = new DateTime("now");
 		foreach(self::$child_appts as $appt) {
 			$birth_date = new DateTime($post['birth_date']);
-			$data['message'] = preg_replace("/%appt_name%/", $appt['name'], self::MESSAGE);
 			if($appt['after']) {
 				$data['date'] = $birth_date->add(DateInterval::createFromDateSTring($appt['interval']));
 			}
@@ -34,6 +33,9 @@ class Model_Appointment extends Model {
 			if($data['date'] < $now) {
 				continue;
 			}
+			$data['message'] = preg_replace("/%appt_name%/", $appt['name'], self::MESSAGE);
+			$data['message'] = preg_replace("/%child_name%/", $data['child_name'], $data['message']);
+			$data['message'] = preg_replace("/%date%/", $data['date']->format("M j, Y"), $data['message']);
 			$data['date'] = $data['date']->getTimestamp();
 			$this->add_appointment($data);
 		}
