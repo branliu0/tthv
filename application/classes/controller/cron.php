@@ -32,12 +32,53 @@ class Controller_Cron extends Controller {
     //$this->sendSMS($appt);
   }
 
+  public function action_testsms() {
+    $user="Vipashyin"; //your username
+    $password="remindavax"; //your password
+    // $mobilenumbers="919731593584"; //enter Mobile numbers comma seperated
+    $mobilenumbers="919448077487";
+    $message = "Test message sent at " . strftime("%b %e %H:%M:%S"); //enter Your Message 
+    echo $message;
+    $senderid="SMSCountry"; //Your senderid
+    $messagetype="N"; //Type Of Your Message
+    $DReports="Y"; //Delivery Reports
+    $url="http://www.smscountry.com/SMSCwebservice.asp";
+    $message = urlencode($message);
+    $ch = curl_init(); 
+    if (!$ch){die("Couldn't initialize a cURL handle");}
+    $ret = curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt ($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);          
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    curl_setopt ($ch, CURLOPT_POSTFIELDS, 
+      "User=$user&passwd=$password&mobilenumber=$mobilenumbers&message=$message&sid=$senderid&mtype=$messagetype&DR=$DReports");
+    $ret = curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $curlresponse = curl_exec($ch); // execute
+    if(curl_errno($ch))
+      echo 'curl error : '. curl_error($ch);
+
+    if (empty($ret)) {
+      // some kind of an error happened
+      die("curl error: " . curl_error($ch));
+      curl_close($ch); // close cURL handler
+    } 
+    else {
+      $info = curl_getinfo($ch);
+      curl_close($ch); // close cURL handler
+        //echo "<br>";
+        echo "response: " . $curlresponse;    //echo "Message Sent Succesfully" ;
+
+    }
+  }
+
   private function sendSMS($appt) {
-    $mobile = Model::factory('case')->select_by_id($appt['case_id']);
+    $case = Model::factory('case')->select_by_id($appt['case_id']);
+    $mobile = $case['mobile'];
 
     //copied from smscountry.com
-    $user="XXXXXX"; //your username
-    $password="XXXXXX"; //your password
+    $user="Vipashyin"; //your username
+    $password="13944943"; //your password
     $mobilenumbers=$mobile; //enter Mobile numbers comma seperated
     $message = $appt['message']; //enter Your Message 
     $senderid="SMSCountry"; //Your senderid
