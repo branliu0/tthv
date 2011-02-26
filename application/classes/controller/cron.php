@@ -33,14 +33,18 @@ class Controller_Cron extends Controller {
   }
 
   public function action_testsms() {
+    $appt = Model::factory('appointment')->select_by_id(31); // Contains some kannada script
+    
     $user="Vipashyin"; //your username
     $password="remindavax"; //your password
-    // $mobilenumbers="919731593584"; //enter Mobile numbers comma seperated
-    $mobilenumbers="919448077487";
-    $message = "Test message sent at " . strftime("%b %e %H:%M:%S"); //enter Your Message 
+    $mobilenumbers="919731593584"; // Dr. Rashmi
+    // $mobilenumbers="919448077487"; // Dr. Sudarshan
+    //$message = urlencode($appt['message']);
+    $message = $appt['message'];
+    // $message = "Test message sent at " . strftime("%b %e %H:%M:%S"); //enter Your Message 
     echo $message;
     $senderid="SMSCountry"; //Your senderid
-    $messagetype="N"; //Type Of Your Message
+    $messagetype="OL"; //Unicode message
     $DReports="Y"; //Delivery Reports
     $url="http://www.smscountry.com/SMSCwebservice.asp";
     $message = urlencode($message);

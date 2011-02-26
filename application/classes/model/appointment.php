@@ -65,6 +65,13 @@ class Model_Appointment extends Model {
 		return DB::insert('appointments', array_keys($data))->values($data)->execute();
 	}
 
+  public function select_by_id($id) {
+    $array =  DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE id=:id LIMIT 1')
+      ->param(':id', $id)
+      ->execute()->as_array();
+    return array_shift($array);
+  }
+
 	public function select_by_case_id($id) {
 		return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE case_id=:case_id AND date > :now ORDER BY date ASC')
 			->param(':case_id', $id)
