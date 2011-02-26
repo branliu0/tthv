@@ -3,3 +3,6 @@ application/logs/*
 application/bootstrap.php
 application/config/*
 .htaccess
+awstats-icon
+awstatsicons
+icon
