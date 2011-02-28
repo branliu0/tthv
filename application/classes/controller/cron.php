@@ -34,7 +34,6 @@ class Controller_Cron extends Controller {
 
   public function action_testsms() {
     $appt = Model::factory('appointment')->select_by_id(31); // Contains some kannada script
-    
     $user="Vipashyin"; //your username
     $password="remindavax"; //your password
     $mobilenumbers="919731593584"; // Dr. Rashmi
@@ -43,6 +42,15 @@ class Controller_Cron extends Controller {
     $message = $appt['message'];
     // $message = "Test message sent at " . strftime("%b %e %H:%M:%S"); //enter Your Message 
     echo $message;
+    print_r($this->hex_chars($message));
+    $hex = $this->hex_chars($message);
+    $hex = $hex['mb_hex'];
+    $hex = preg_replace("/\{([0-9A-F]{2})\}/", "{00$1}", $hex);
+    $hex = preg_replace("/\{(.*?)\}/", "$1", $hex);
+    echo $hex;
+
+    $message = $hex;
+
     $senderid="SMSCountry"; //Your senderid
     $messagetype="OL"; //Unicode message
     $DReports="Y"; //Delivery Reports
@@ -116,6 +124,40 @@ class Controller_Cron extends Controller {
         echo $curlresponse;    //echo "Message Sent Succesfully" ;
 
     }
+  }
+
+  private function hex_chars($data) {
+    $mb_chars = '';
+    $mb_hex = '';
+    for ($i=0; $i<mb_strlen($data, 'UTF-8'); $i++) {
+      $c = mb_substr($data, $i, 1, 'UTF-8');
+      $mb_chars .= '{'. ($c). '}';
+
+      $o = unpack('N', mb_convert_encoding($c, 'UCS-4BE', 'UTF-8'));
+      $mb_hex .= '{'. $this->hex_format($o[1]). '}';
+    }
+    $chars = '';
+    $hex = '';
+    for ($i=0; $i<strlen($data); $i++) {
+      $c = substr($data, $i, 1);
+      $chars .= '{'. ($c). '}';
+      $hex .= '{'. $this->hex_format(ord($c)). '}';
+    }
+    return array(
+      'data' => $data,
+      'chars' => $chars,
+      'hex' => $hex,
+      'mb_chars' => $mb_chars,
+      'mb_hex' => $mb_hex,
+    );
+  }
+
+  private function hex_format($o) {
+    $h = strtoupper(dechex($o));
+    $len = strlen($h);
+    if ($len % 2 == 1)
+      $h = "0$h";
+    return $h;
   }
 
 }
