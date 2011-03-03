@@ -36,8 +36,9 @@ class Controller_Cron extends Controller {
     $appt = Model::factory('appointment')->select_by_id(31); // Contains some kannada script
     $user="Vipashyin"; //your username
     $password="remindavax"; //your password
-    $mobilenumbers="919731593584"; // Dr. Rashmi
+    // $mobilenumbers="919731593584"; // Dr. Rashmi
     // $mobilenumbers="919448077487"; // Dr. Sudarshan
+    $mobilenumbers = "919901184289";
     //$message = urlencode($appt['message']);
     $message = $appt['message'];
     // $message = "Test message sent at " . strftime("%b %e %H:%M:%S"); //enter Your Message 
