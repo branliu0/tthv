@@ -52,8 +52,11 @@ class Controller_Cron extends Controller {
 
     $message = $hex;
 
+    $message = "Test message sent in English!";
+    $messagetype="N"; // Normal message
+
     $senderid="SMSCountry"; //Your senderid
-    $messagetype="OL"; //Unicode message
+    // $messagetype="OL"; //Unicode message
     $DReports="Y"; //Delivery Reports
     $url="http://www.smscountry.com/SMSCwebservice.asp";
     $message = urlencode($message);
