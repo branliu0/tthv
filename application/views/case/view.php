@@ -60,5 +60,10 @@
 <script>
 	$(function() {
 		$("#birth_date").datepicker();
+
+    var checkedIn = <?= $checkedIn ?>;
+    if (checkedIn == 0) {
+      $("#entry").first().prepend('<?= html::anchor("#", "Check In", array("id" => "check_in")) ?>);
+    }
 	});
 </script>

@@ -34,10 +34,20 @@
 </div>
 
 <script>
-  //$(function() {
-  //  $("#village_name").autocomplete({
-  //    source:"<?= url::site('ajax/get_villages') ?>",
-  //    minLength: 1
-  //  });
-  //});
+  $(function() {
+    $("#village_name").autocomplete({
+      source: function(req, add) {
+        $.getJSON("<?= url::site('ajax/get_villages/') ?>", req, function(data) {
+          add(data);
+        });
+      }
+    });
+    $("#phc_name").autocomplete({
+      source: function(req, add) {
+        $.getJSON("<?= url::site('ajax/get_phcs/') ?>", req, function(data) {
+          add(data);
+        });
+      }
+    });
+  });
 </script>

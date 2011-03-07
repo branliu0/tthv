@@ -86,7 +86,6 @@ class Controller_Api extends Controller {
       if ($post->check()) {
         $appts = Model::factory('appointment');
         $_POST['date'] = strtotime($_POST['date']);
-        print_r($_POST);
         list($id, $num_rows) = $appts->add_appointment($_POST);
         echo json_encode(array("success" => true, "id" => $id));
       }
