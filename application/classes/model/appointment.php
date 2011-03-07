@@ -61,7 +61,11 @@ class Model_Appointment extends Model {
 		}
 	}
 
-	public function add_appointment($data) {
+	public function add_appointment($post) {
+    $data['child_name'] = $post['child_name'];
+    $data['date'] = $post['date'];
+    $data['message'] = $post['message'];
+    $data['case_id'] = $post['case_id'];
 		return DB::insert('appointments', array_keys($data))->values($data)->execute();
 	}
 

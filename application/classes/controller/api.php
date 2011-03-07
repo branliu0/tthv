@@ -2,8 +2,11 @@
 
 class Controller_Api extends Controller {
   public function action_index() {
+    error_reporting(E_ALL);
+    ini_set('log_errors', '1');
     if (!isset($_POST['action'])) {
       echo json_encode(array("success" => false, "errors" => array("Please provide an API action")));
+      return;
     }
     switch ($_POST['action']) {
       // Adds a new patient
@@ -25,8 +28,8 @@ class Controller_Api extends Controller {
       $post->rule('mobile', 'exact_length', array(10));
 
       if ($post->check()) {
-        Model::factory('case')->add($post->as_array());
-        echo json_encode(array("success" => true));
+        list($case_id, $num_rows) = Model::factory('case')->add($post->as_array());
+        echo json_encode(array("success" => true, "case_id" => $case_id));
       }
       else {
         $errors = $post->errors('validate');
@@ -51,7 +54,7 @@ class Controller_Api extends Controller {
         break;
       }
       if ($post->check()) {
-        $appts->add_child($post);
+        Model::factory('appointment')->add_child($_POST);
         echo json_encode(array("success" => true));
       }
       else {
@@ -82,13 +85,10 @@ class Controller_Api extends Controller {
 
       if ($post->check()) {
         $appts = Model::factory('appointment');
-        $data['child_name'] = $post['child_name'];
-        $data['message'] = $post['message'];
-        $data['date'] = new DateTime($post['date']);
-        $data['date'] = $data['date']->getTimestamp();
-        $data['case_id'] = $post['case_id'];
-        $appts->add_appointment($data);
-        echo json_encode(array("success" => true));
+        $_POST['date'] = strtotime($_POST['date']);
+        print_r($_POST);
+        list($id, $num_rows) = $appts->add_appointment($_POST);
+        echo json_encode(array("success" => true, "id" => $id));
       }
       else {
         $errors = $post->errors('validate');

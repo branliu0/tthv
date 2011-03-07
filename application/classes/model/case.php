@@ -20,4 +20,8 @@ class Model_Case extends Model {
 		$id = DB::insert('cases', array_keys($post))->values($post)->execute();
 		return $id;
 	}
+
+  public function get_villages() {
+    return DB::query(Database::SELECT, 'SELECT village_name FROM cases GROUP BY village_name')->execute()->as_array();
+  }
 }
