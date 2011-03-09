@@ -50,8 +50,8 @@
         <tr appt_id="<?= $appt['id'] ?>"><td><?php echo date('M j, Y', $appt['date']); ?></td>
 				<td><?php echo $appt['child_name']; ?></td>
 				<td><?php echo $appt['message']; ?></td>
-        <td><a href="#" onclick="return false;" appt_id="<?=$appt['id']?>"><?= html::image('images/delete.png', array('width' => '20px')) ?></a>
-          <span class="sure" appt_id="<?= $appt['id'] ?>" style="display:none;">Sure? <span class="yes">Yes</span> <span class="no">No</span></span></td></tr>
+        <td><a href="#" onclick="return false;" appt_id="<?=$appt['id']?>"><?= html::image('images/delete.png', array('width' => '20px')) ?></a></td>
+        <td><span class="sure" appt_id="<?= $appt['id'] ?>" style="display:none;">Sure? <span class="yes" style="font-weight: bold;">Yes</span> <span class="no" style="font-weight: bold;">No</span></span></td></tr>
 			<?php endforeach; ?>
 			</tbody>
 		</table>
