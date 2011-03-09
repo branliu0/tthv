@@ -1,4 +1,5 @@
 <h2>Patient Details</h2>
+    <div id="check_in"></div>
 <div class="post">
 	<div class="entry">
 		<label>Patient Name: <b><?php echo $case['patient_name']; ?></b></label>
@@ -38,7 +39,7 @@
   <h3 class="title">Upcoming Appointments <?php echo html::anchor("appointment/add/{$case['id']}", html::image('images/add.png',
     array('height' => '20px'))); ?></h3>
 
-		<table class="view-table">
+		<table id="appointments" class="view-table">
 			<thead><tr>
 				<th>Date</th>
 				<th>Child Name</th>
@@ -46,11 +47,11 @@
 			</tr></thead>
 			<tbody>
 			<?php foreach($appts as $appt): ?>
-				<tr><td><?php echo date('M j, Y', $appt['date']); ?></td>
+        <tr appt_id="<?= $appt['id'] ?>"><td><?php echo date('M j, Y', $appt['date']); ?></td>
 				<td><?php echo $appt['child_name']; ?></td>
 				<td><?php echo $appt['message']; ?></td>
-				<td><?php echo html::anchor("appointment/delete/{$appt['case_id']}/{$appt['id']}", 
-					html::image('images/delete.png', array('height' => '20px'))); ?></td></tr>
+        <td><a href="#" onclick="return false;" appt_id="<?=$appt['id']?>"><?= html::image('images/delete.png', array('width' => '20px')) ?></a>
+          <span class="sure" appt_id="<?= $appt['id'] ?>" style="display:none;">Sure? <span class="yes">Yes</span> <span class="no">No</span></span></td></tr>
 			<?php endforeach; ?>
 			</tbody>
 		</table>
@@ -59,11 +60,56 @@
 
 <script>
 	$(function() {
+    // Setting up JS hooks for deleting
+    $("#appointments a").each(function(i) {
+      $(this).click(function() {
+        var apptId = $(this).attr('appt_id');
+        $(".sure[appt_id=" + apptId + "]").fadeIn();
+      });
+    });
+
+    $(".yes").each(function(i) {
+      $(this).click(function() {
+        var apptId = $(this).parent().attr('appt_id');
+        $.post('<?= url::site("ajax/delete_appointment") ?>', {id: apptId}, function(data) {
+          if (data == "success") {
+            $("tr[appt_id=" + apptId + "]").fadeOut();
+          }
+        });
+      });
+    });
+
+    $(".no").each(function(i) {
+      $(this).click(function() {
+        var apptId = $(this).parent().attr('appt_id');
+        $(".sure[appt_id=" + apptId + "]").fadeOut();
+      });
+    });
+
+    // Datepicker
 		$("#birth_date").datepicker();
+
+    // Checkin functionality
+    function checkIn() {
+      $("#check_in").empty();
+      $("<span />").addClass("checked-in").append("Checked In!").appendTo($("#check_in"));
+    }
 
     var checkedIn = <?= $checkedIn ?>;
     if (checkedIn == 0) {
-      $("#entry").first().prepend('<?= html::anchor("#", "Check In", array("id" => "check_in")) ?>);
+      $("#check_in").empty();
+      $("#check_in").append('<?= html::anchor("#", "Check In", array("id" => "check_in")) ?>');
+      $("#check_in").click(function() {
+        $.post('<?= url::site("ajax/check_in") ?>', {case_id: <?= $case['id'] ?>, time: <?= $appts[0]['date'] ?>}, function(data) {
+          if (data == "success") {
+            $("#check_in").unbind('click');
+            checkIn();
+          }
+        });
+      });
+    }
+    else if (checkedIn == 1) {
+      checkIn();
     }
 	});
 </script>

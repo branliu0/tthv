@@ -77,9 +77,10 @@ class Model_Appointment extends Model {
   }
 
 	public function select_by_case_id($id) {
-		return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE case_id=:case_id AND date > :now ORDER BY date ASC')
+    $yesterday = new DateTime("yesterday");
+		return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE case_id=:case_id AND date > :yesterday ORDER BY date ASC')
 			->param(':case_id', $id)
-      ->param(':now', time())
+      ->param(':yesterday', $yesterday->getTimestamp())
 			->execute();
 	}
 
@@ -94,4 +95,11 @@ class Model_Appointment extends Model {
 			->param(':id', $id)
 			->execute();
 	}
+
+  public function check_in($case_id, $time) {
+    return DB::query(Database::UPDATE, 'UPDATE appointments SET checked_in=1 WHERE case_id=:case_id AND date=:date')
+      ->param(':case_id', $case_id)
+      ->param(':date', $time)
+      ->execute();
+  }
 }
