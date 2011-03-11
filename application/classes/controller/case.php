@@ -36,22 +36,21 @@ class Controller_Case extends Controller_Template {
 
 		$case = $cases->select_by_id($id);
 		$appointments = $appts->select_by_case_id($id);
+    $appt_array = $appointments->as_array();
 
     $checkedIn = -1;
     if ($appointments->count() != 0) {
-      $nextApptTime = new DateTime("@" . $appointments[0]['date']);
+      $nextApptTime = new DateTime("@" . $appt_array[0]['date']);
       $now = new DateTime("now");
       if ($nextApptTime->format("m d Y") == $now->format("m d Y")) {
-        $checkedIn = $appointments[0]['checked_in'];
+        $checkedIn = $appt_array[0]['checked_in'];
       }
     }
 
-    $appointments = $appointments->as_array();
-
 		$this->template->content = View::factory('case/view')
 			->bind('case', $case)
-			->bind('appts', $appointments)
       ->bind('checkedIn', $checkedIn)
+			->bind('appts', $appt_array)
 			->bind('post', $post)
 			->bind('errors', $errors);
 	}
