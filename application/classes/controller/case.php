@@ -46,6 +46,8 @@ class Controller_Case extends Controller_Template {
       }
     }
 
+    $appointments = $appointments->as_array();
+
 		$this->template->content = View::factory('case/view')
 			->bind('case', $case)
 			->bind('appts', $appointments)
