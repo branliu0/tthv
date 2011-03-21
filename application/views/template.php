@@ -17,7 +17,7 @@
 	<div id="header-wrapper">
 		<div id="header">
 			<div id="logo">
-				<h1><?php echo html::anchor('/', '<span>Reminda</span>Vax</a>'); ?></h1>
+				<h1><?php echo html::anchor('/', '<span>Reminda</span>vax</a>'); ?></h1>
 			</div>
 			<?php echo View::factory('menu'); ?>
 		</div>
