@@ -47,12 +47,9 @@ class Controller_Api extends Controller {
       $post->filter(TRUE, 'trim');
       $post->rule('child_name', 'not_empty');
       $post->rule('birth_date', 'not_empty');
+      $post->rule('case_id', 'not_empty');
       $post->rule('birth_date', 'date');
 
-      if (!isset($_POST['case_id'])) {
-        echo json_encode(array("success" => false, "errors" => array("Please include the case id of the patient")));
-        break;
-      }
       if ($post->check()) {
         Model::factory('appointment')->add_child($_POST);
         echo json_encode(array("success" => true));
@@ -74,14 +71,10 @@ class Controller_Api extends Controller {
       $post->filter(TRUE, 'trim');
       $post->rule('child_name', 'not_empty');
       $post->rule('date', 'not_empty');
+      $post->rule('case_id', 'not_empty');
       $post->rule('date', 'date');
       $post->rule('message', 'not_empty');
       $post->rule('message', 'max_length', array(150));
-
-      if (!isset($_POST['case_id'])) {
-        echo json_encode(array("success" => false, "errors" => array("Please include the case id of the patient")));
-        break;
-      }
 
       if ($post->check()) {
         $appts = Model::factory('appointment');
@@ -105,6 +98,25 @@ class Controller_Api extends Controller {
       }
       $appointments = Model::factory('appointment')->select_by_case_id($_POST['case_id']);
       echo json_encode(array("success" => true, "case_id" => $_POST['case_id'], "appointments" => $appointments));
+      break;
+      // Checks in for an appointment
+      // Required fields:
+      // Description | field_name | required_attributes
+      // Appointment Id | id | not_empty, digit
+    case "checkIn":
+      $post = Validate::factory($_POST);
+      $post->filter(TRUE, 'trim');
+      $post->rule('id', 'not_empty');
+      $post->rule('id', 'digit');
+
+      if ($post->check()) {
+        Model::factory('appointment')->check_in($_POST['id']);
+        echo json_encode(array("success" => true));
+      }
+      else {
+        $errors = $post->errors('validate');
+        echo json_encode(array("success" => false, "errors" => $errors));
+      }
       break;
     default:
       echo json_encode(array("success" => false, "errors" => array("Please use a valid API action")));
