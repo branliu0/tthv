@@ -8,7 +8,8 @@ class Controller_Ajax extends Controller {
     else {
       $villages = Model::factory('case')->get_villages();
     }
-    $villages = array_map(create_function('$x','return $x["village_name"];'), $villages);
+    $villages = array_map(create_function('$x','return $x["village_name"];'), 
+      $villages->as_array());
     echo json_encode($villages);
   }
 
@@ -19,7 +20,8 @@ class Controller_Ajax extends Controller {
     else {
       $phcs = Model::factory('case')->get_phcs();
     }
-    $phcs = array_map(create_function('$x', 'return $x["phc_name"];'), $phcs);
+    $phcs = array_map(create_function('$x', 'return $x["phc_name"];'), 
+      $phcs->as_array());
     echo json_encode($phcs);
   }
 

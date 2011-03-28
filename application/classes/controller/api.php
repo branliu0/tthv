@@ -97,7 +97,7 @@ class Controller_Api extends Controller {
         break;
       }
       $appointments = Model::factory('appointment')->select_by_case_id($_POST['case_id']);
-      echo json_encode(array("success" => true, "case_id" => $_POST['case_id'], "appointments" => $appointments));
+      echo json_encode(array("success" => true, "case_id" => $_POST['case_id'], "appointments" => $appointments->as_array()));
       break;
       // Checks in for an appointment
       // Required fields:
