@@ -30,11 +30,11 @@ class Controller_Ajax extends Controller {
   }
 
   public function action_check_in() {
-    if (!isset($_POST['time']) || !isset($_POST['case_id'])) {
-      echo "Failure: Please POST the timestamp and case_id of the appointment";
+    if (!isset($_POST['id'])) {
+      echo "Failure: Please POST the id of the appointment";
       return;
     }
-    Model::factory('appointment')->check_in($_POST['case_id'], $_POST['time']);
+    Model::factory('appointment')->check_in($_POST['id']);
     echo "success";
   }
 

@@ -96,10 +96,9 @@ class Model_Appointment extends Model {
 			->execute();
 	}
 
-  public function check_in($case_id, $time) {
-    return DB::query(Database::UPDATE, 'UPDATE appointments SET checked_in=1 WHERE case_id=:case_id AND date=:date')
-      ->param(':case_id', $case_id)
-      ->param(':date', $time)
+  public function check_in($id) {
+    return DB::query(Database::UPDATE, 'UPDATE appointments SET checked_in=1 WHERE id=:id')
+      ->param(':id', $id)
       ->execute();
   }
 }

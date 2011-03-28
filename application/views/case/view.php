@@ -100,7 +100,7 @@
       $("#check_in").empty();
       $("#check_in").append('<?= html::anchor("#", "Check In", array("id" => "check_in")) ?>');
       $("#check_in").click(function() {
-        $.post('<?= url::site("ajax/check_in") ?>', {case_id: <?= $case['id'] ?>, time: <?= (empty($appts)) ? 0 : $appts[0]['date']; ?>}, function(data) {
+        $.post('<?= url::site("ajax/check_in") ?>', {id: <?= (empty($appts)) ? 0 : $appts[0]['id'] ?>}, function(data) {
           if (data == "success") {
             $("#check_in").unbind('click');
             checkIn();
