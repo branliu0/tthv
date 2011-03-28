@@ -12,8 +12,7 @@ class Model_Case extends Model {
 	}
 
 	public function select_by_id($id) {
-		$array = DB::select()->from('cases')->where('id', '=', $id)->limit(1)->execute()->as_array();
-		return array_shift($array);
+    return DB::select()->from('cases')->where('id', '=', $id)->limit(1)->execute();
 	}
 
 	public function add($post) {

@@ -8,11 +8,8 @@ class Controller_Ajax extends Controller {
     else {
       $villages = Model::factory('case')->get_villages();
     }
-    $array = array();
-    foreach($villages as $village) {
-      $array[] = $village["village_name"];
-    }
-    echo json_encode($array);
+    $villages = array_map(create_function('$x','return $x["village_name"];'), $villages);
+    echo json_encode($villages);
   }
 
   public function action_get_phcs() {
@@ -22,11 +19,8 @@ class Controller_Ajax extends Controller {
     else {
       $phcs = Model::factory('case')->get_phcs();
     }
-    $array = array();
-    foreach($phcs as $phc) {
-      $array[] = $phc["phc_name"];
-    }
-    echo json_encode($array);
+    $phcs = array_map(create_function('$x', 'return $x["phc_name"];'), $phcs);
+    echo json_encode($phcs);
   }
 
   public function action_check_in() {

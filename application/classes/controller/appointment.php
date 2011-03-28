@@ -30,7 +30,7 @@ class Controller_Appointment extends Controller_Template {
 
     $errors = $post->errors('validate');
 
-    $case = Model::factory('case')->select_by_id($case_id);
+    $case = Model::factory('case')->select_by_id($case_id)->current();
 
     $this->template->content = View::factory('appointment/add')
       ->bind('post', $post)
