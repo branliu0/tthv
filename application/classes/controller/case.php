@@ -61,7 +61,7 @@ class Controller_Case extends Controller_Template {
 		$post->rule('patient_name', 'not_empty');
 		$post->rule('village_name', 'not_empty');
 		$post->rule('phc_name', 'not_empty');
-		$post->rule('phc_name', 'regex', array('/^[a-zA-Z0-9_\- ]+$/'));
+		$post->rule('phc_name', 'alpha_numeric');
 		$post->rule('mobile', 'not_empty');
 		$post->rule('mobile', 'numeric');
 		$post->rule('mobile', 'exact_length', array(10));

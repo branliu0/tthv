@@ -14,7 +14,7 @@ class Controller_Api extends Controller {
       // Description | field_name | required_attributes
       // Patient Name | patient_name | not_empty
       // Village Name | village_name | not_empty
-      // Primary Health Center Name | phc_name | not_empty, only alphanum, _-
+      // Primary Health Center Name | phc_name | not_empty, alphanum
       // Mobile number | mobile | 10 digits
     case "addPatient":
       $post = Validate::factory($_POST);
@@ -22,7 +22,7 @@ class Controller_Api extends Controller {
       $post->rule('patient_name', 'not_empty');
       $post->rule('village_name', 'not_empty');
       $post->rule('phc_name', 'not_empty');
-      $post->rule('phc_name', 'regex', array('/^[a-zA-Z0-9_\- ]+$/'));
+      $post->rule('phc_name', 'alpha_numeric');
       $post->rule('mobile', 'not_empty');
       $post->rule('mobile', 'numeric');
       $post->rule('mobile', 'exact_length', array(10));
