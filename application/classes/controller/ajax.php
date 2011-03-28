@@ -30,8 +30,8 @@ class Controller_Ajax extends Controller {
       echo "Failure: Please POST the id of the appointment";
       return;
     }
-    Model::factory('appointment')->check_in($_POST['id']);
-    echo "success";
+    $rows_affected = Model::factory('appointment')->check_in($_POST['id']);
+    echo ($rows_affected) ? "success" : "error checking in";
   }
 
   public function action_delete_appointment() {
@@ -39,7 +39,7 @@ class Controller_Ajax extends Controller {
       echo "Failure: Please POST the id of the appointment to be deleted";
       return;
     }
-    Model::factory('appointment')->delete_appointment($_POST['id']);
-    echo "success";
+    $rows_affected = Model::factory('appointment')->delete_appointment($_POST['id']);
+    echo ($rows_affected) ? "success" : "error deleting";
   }
 }

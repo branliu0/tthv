@@ -73,7 +73,7 @@ class Model_Appointment extends Model {
 	}
 
   public function select_by_id($id) {
-    DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE id=:id LIMIT 1')
+    return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE id=:id LIMIT 1')
       ->param(':id', $id)
       ->execute();
   }
