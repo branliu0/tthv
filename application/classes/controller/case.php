@@ -82,4 +82,13 @@ class Controller_Case extends Controller_Template {
 			->bind('errors', $errors);
 	}
 
+  public function action_today() {
+    $today = new DateTime("today");
+    echo $today->getTimestamp();
+    print_r(Model::factory('case')->select_with_appts_today()->as_array());
+    $cases = Model::factory('case')->select_with_appts_today();
+    $this->template->content = View::factory('case/today')
+      ->set('cases', $cases);
+  }
+
 }
