@@ -84,7 +84,8 @@ class Kohana_Database_PDO extends Database {
 		$this->_connection or $this->connect();
 
 		// Execute a raw SET NAMES query
-		$this->_connection->exec('SET NAMES '.$this->quote($charset));
+    // This doesn't work on SQL Server
+		// $this->_connection->exec('SET NAMES '.$this->quote($charset));
 	}
 
 	public function query($type, $sql, $as_object = FALSE, array $params = NULL)
