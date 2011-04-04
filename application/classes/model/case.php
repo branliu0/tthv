@@ -12,10 +12,9 @@ class Model_Case extends Model {
 	}
 
 	public function select_by_id($id) {
-    return DB::select()
-      ->from('cases')
-      ->where('id', '=', $id)
-      ->limit(1)
+    // return DB::query(Database::SELECT, 'SELECT * FROM cases WHERE id=:id LIMIT 1')
+    return DB::query(Database::SELECT, 'SELECT TOP(1) * FROM cases WHERE id=:id')
+      ->param(':id', $id)
       ->execute();
 	}
 

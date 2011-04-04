@@ -93,7 +93,8 @@ class Model_Appointment extends Model {
   }
 
 	public function delete_appointment($id) {
-		return DB::query(Database::DELETE, 'DELETE FROM appointments WHERE id=:id LIMIT 1')
+		// return DB::query(Database::DELETE, 'DELETE FROM appointments WHERE id=:id LIMIT 1')
+    return DB::query(Database::DELETE, 'DELETE FROM appointments WHERE id=:id')
 			->param(':id', $id)
 			->execute();
 	}

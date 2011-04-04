@@ -47,11 +47,11 @@
 			</tr></thead>
 			<tbody>
 			<?php foreach($appts as $appt): ?>
-        <tr appt_id="<?= $appt['id'] ?>"><td><?php echo date('M j, Y', $appt['date']); ?></td>
+        <tr appt_id="<?php echo $appt['id']; ?>"><td><?php echo date('M j, Y', $appt['date']); ?></td>
 				<td><?php echo $appt['child_name']; ?></td>
 				<td><?php echo $appt['message']; ?></td>
-        <td><a href="#" onclick="return false;" appt_id="<?=$appt['id']?>"><?= html::image('images/delete.png', array('width' => '20px')) ?></a></td>
-        <td><span class="sure" appt_id="<?= $appt['id'] ?>" style="display:none;">Sure? <span class="yes" style="font-weight: bold;">Yes</span> <span class="no" style="font-weight: bold;">No</span></span></td></tr>
+        <td><a href="#" onclick="return false;" appt_id="<?php echo $appt['id']; ?>"><?php echo html::image('images/delete.png', array('width' => '20px')); ?></a></td>
+        <td><span class="sure" appt_id="<?php echo $appt['id']; ?>" style="display:none;">Sure? <span class="yes" style="font-weight: bold;">Yes</span> <span class="no" style="font-weight: bold;">No</span></span></td></tr>
 			<?php endforeach; ?>
 			</tbody>
 		</table>
@@ -71,7 +71,7 @@
     $(".yes").each(function(i) {
       $(this).click(function() {
         var apptId = $(this).parent().attr('appt_id');
-        $.post('<?= url::site("ajax/delete_appointment") ?>', {id: apptId}, function(data) {
+        $.post('<?php echo url::site("ajax/delete_appointment"); ?>', {id: apptId}, function(data) {
           if (data == "success") {
             $("tr[appt_id=" + apptId + "]").fadeOut();
           }
@@ -95,12 +95,12 @@
       $("<span />").addClass("checked-in").append("Checked In!").appendTo($("#check_in"));
     }
 
-    var checkedIn = <?= $checkedIn ?>;
+    var checkedIn = <?php echo $checkedIn; ?>;
     if (checkedIn == 0) {
       $("#check_in").empty();
-      $("#check_in").append('<?= html::anchor("#", "Check In", array("id" => "check_in")) ?>');
+      $("#check_in").append('<?php echo html::anchor("#", "Check In", array("id" => "check_in")); ?>');
       $("#check_in").click(function() {
-        $.post('<?= url::site("ajax/check_in") ?>', {id: <?= ($checkedIn == -1) ? 0 : $nextAppt['id'] ?>}, function(data) {
+        $.post('<?php echo url::site("ajax/check_in"); ?>', {id: <?php echo ($checkedIn == -1) ? 0 : $nextAppt['id']; ?>}, function(data) {
           if (data == "success") {
             $("#check_in").unbind('click');
             checkIn();
