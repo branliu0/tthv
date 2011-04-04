@@ -9,6 +9,24 @@ class Controller_Api extends Controller {
       return;
     }
     switch ($_POST['action']) {
+      // Gets all the patients in a village
+      // Required fields:
+      // Description | field_name | required_attributes
+      // Village Name | village_name | not_empty
+    case "getCasesByVillageName":
+      $post = Validate::factory($_POST);
+      $post->filter(TRUE, 'trim');
+      $post->rule('village_name', 'not_empty');
+
+      if ($post->check()) {
+        $cases = Model::factory('case')->select_by_village_name($post['village_name']);
+        return json_encode(array("success" => true, cases => $cases->as_array()));
+      }
+      else {
+        $errors = $post->errors('validate');
+        echo json_encode(array("success" => false, "errors" => $errors));
+      }
+      break;
       // Adds a new patient
       // Required fields:
       // Description | field_name | required_attributes
@@ -16,7 +34,7 @@ class Controller_Api extends Controller {
       // Village Name | village_name | not_empty
       // Primary Health Center Name | phc_name | not_empty, alphanum
       // Mobile number | mobile | 10 digits
-    case "addPatient":
+    case "addCase":
       $post = Validate::factory($_POST);
       $post->filter(TRUE, 'trim');
       $post->rule('patient_name', 'not_empty');
@@ -87,23 +105,100 @@ class Controller_Api extends Controller {
         echo json_encode(array("success" => false, "errors" => $errors));
       }
       break;
+    case "addCaseWithChildrenAndAppointments":
+      // Check case data
+      $post = Validate::factory($_POST);
+      $post->filter(TRUE, 'trim');
+      $post->rule('patient_name', 'not_empty');
+      $post->rule('village_name', 'not_empty');
+      $post->rule('phc_name', 'not_empty');
+      $post->rule('phc_name', 'alpha_numeric');
+      $post->rule('mobile', 'not_empty');
+      $post->rule('mobile', 'numeric');
+      $post->rule('mobile', 'exact_length', array(10));
+
+      if (!$post->check()) {
+        $errors = $post->errors('validate');
+        echo json_encode(array("success" => false, "errors" => $errors));
+      }
+
+      // Check children data
+      if (isset($post['children'])) {
+        foreach(json_decode($post['children']) as $child) {
+          $post = Validate::factory($child);
+          $post->filter(TRUE, 'trim');
+          $post->rule('child_name', 'not_empty');
+          $post->rule('birth_date', 'not_empty');
+          $post->rule('case_id', 'not_empty');
+          $post->rule('birth_date', 'date');
+
+          if (!$post->check()) {
+            $errors = $post->errors('validate');
+            echo json_encode(array("success" => false, "errors" => $errors));
+          }
+        }
+      }
+      
+      // Check appointment data
+      if (isset($post['appointments'])) {
+        foreach(json_decode($post['appointments']) as $appt) {
+          $post = Validate::factory($appt);
+          $post->filter(TRUE, 'trim');
+          $post->rule('child_name', 'not_empty');
+          $post->rule('date', 'not_empty');
+          $post->rule('case_id', 'not_empty');
+          $post->rule('date', 'date');
+          $post->rule('message', 'not_empty');
+          $post->rule('message', 'max_length', array(150));
+
+          if (!$post->check()) {
+            $errors = $post->errors('validate');
+            echo json_encode(array("success" => false, "errors" => $errors));
+          }
+        }
+      }
+
+      // All validation has passed. Let's insert the data!
+      $caseModel = Model::factory('case');
+      $apptModel = Model::factory('appointment');
+      list($case_id, $num_rows) = $caseModel->add_case($post);
+
+      if (isset($post['children'])) {
+        foreach(json_decode($post['children']) as $child) {
+          $apptModel->add_child($child);
+        }
+      }
+      if (isset($post['appointments'])) {
+        foreach(json_decode($post['appointments']) as $appt) {
+          $apptModel->add_appointment($appt);
+        }
+      }
+      echo json_encode(array("success" => true, "case_id" => $case_id));
+      break;
       // Gets all the appointments for a patient
       // Required fields:
       // Description | field_name | required_attributes
-      // Patient Case Id | case_id | not_empty
+      // Patient Case Id | case_id | not_empty, digit
     case "getAppointments":
-      if (!isset($_POST['case_id'])) {
-        echo json_encode(array("success" => false, "errors" => array("Please include the case id of the patient")));
-        break;
+      $post = Validate::factory($_POST);
+      $post->filter(TRUE, 'trim');
+      $post->rule('case_id', 'not_empty');
+      $post->rule('case_id', 'digit');
+
+      if ($post->check()) {
+        $appointments = Model::factory('appointment')->select_by_case_id($_POST['case_id']);
+        echo json_encode(array("success" => true, "appointments" => $appointments->as_array()));
       }
-      $appointments = Model::factory('appointment')->select_by_case_id($_POST['case_id']);
-      echo json_encode(array("success" => true, "case_id" => $_POST['case_id'], "appointments" => $appointments->as_array()));
+      else {
+        $errors = $post->errors('validate');
+        echo json_encode(array("success" => false, "errors" => $errors));
+      }
       break;
       // Checks in for an appointment
       // Required fields:
       // Description | field_name | required_attributes
       // Appointment Id | id | not_empty, digit
-    case "checkIn":
+    case "checkInAppointment":
       $post = Validate::factory($_POST);
       $post->filter(TRUE, 'trim');
       $post->rule('id', 'not_empty');
@@ -117,6 +212,30 @@ class Controller_Api extends Controller {
         $errors = $post->errors('validate');
         echo json_encode(array("success" => false, "errors" => $errors));
       }
+      break;
+    case "getCasesToday":
+      $cases = Model::factory('case')->select_with_appts_today();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      break;
+    case "getCasesOverdueByVillage":
+      $villages = Model::factory('case')->select_overdue_by_village();
+      echo json_encode(array("success" => true, "villages" => $villages->as_array()));
+      break;
+    case "getCasesNextWeek":
+      $cases = Model::factory('case')->select_with_appts_this_week();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      break;
+    case "getCasesNextWeekByVillage":
+      $cases = Model::factory('case')->select_with_appts_this_week_by_village();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      break;
+    case "getCasesOverdueLastWeek":
+      $cases = Model::factory('case')->select_overdue_last_week();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      break;
+    case "getCasesOverdueLastWeekByVillage":
+      $cases = Model::factory('case')->select_overdue_last_week_by_village();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
       break;
     default:
       echo json_encode(array("success" => false, "errors" => array("Please use a valid API action")));

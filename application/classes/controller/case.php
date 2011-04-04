@@ -71,7 +71,7 @@ class Controller_Case extends Controller_Template {
 
 		if ($post->check()) {
 			$case = Model::factory('case');
-			list($case_id, $affected_rows) = $case->add($post->as_array());
+			list($case_id, $affected_rows) = $case->add_case($post->as_array());
 			$this->request->redirect("case/view/{$case_id}");
 		}
 
@@ -84,8 +84,8 @@ class Controller_Case extends Controller_Template {
 
   public function action_today() {
     $today = new DateTime("today");
-    echo $today->getTimestamp();
-    print_r(Model::factory('case')->select_with_appts_today()->as_array());
+    // echo $today->getTimestamp();
+    // print_r(Model::factory('case')->select_with_appts_today()->as_array());
     $cases = Model::factory('case')->select_with_appts_today();
     $this->template->content = View::factory('case/today')
       ->set('cases', $cases);

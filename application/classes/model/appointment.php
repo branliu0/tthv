@@ -41,7 +41,7 @@ class Model_Appointment extends Model {
 
       // Calculate the date of the appointment
 			if($appt['after']) {
-				$data['date'] = $birth_date->add(DateInterval::createFromDateSTring($appt['interval']));
+				$data['date'] = $birth_date->add(DateInterval::createFromDateString($appt['interval']));
 			}
 			else {
 				$data['date'] = $birth_date->sub(DateInterval::createFromDateString($appt['interval']));
