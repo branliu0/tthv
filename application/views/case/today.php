@@ -1,4 +1,7 @@
 <h2>Appointments Today</h2>
+<?php if($cases->count() == 0): ?>
+  There are no appointments for today.
+<?php else: ?>
 <table class="view-table">
 	<thead><tr>
 		<th>Patient Name</th>
@@ -15,4 +18,4 @@
 <?php endforeach; ?>
 	</tbody>
 </table>
-
+<?php endif; ?>
