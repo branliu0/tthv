@@ -217,6 +217,9 @@ class Controller_Api extends Controller {
       $cases = Model::factory('case')->select_with_appts_today();
       echo json_encode(array("success" => true, "cases" => $cases->as_array()));
       break;
+    case "getCasesOverdue":
+      $cases = Model::factory('case')->select_overdue();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
     case "getCasesOverdueByVillage":
       $villages = Model::factory('case')->select_overdue_by_village();
       echo json_encode(array("success" => true, "villages" => $villages->as_array()));
@@ -226,16 +229,16 @@ class Controller_Api extends Controller {
       echo json_encode(array("success" => true, "cases" => $cases->as_array()));
       break;
     case "getCasesNextWeekByVillage":
-      $cases = Model::factory('case')->select_with_appts_this_week_by_village();
-      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      $villages = Model::factory('case')->select_with_appts_this_week_by_village();
+      echo json_encode(array("success" => true, "villages" => $villages->as_array()));
       break;
     case "getCasesOverdueLastWeek":
       $cases = Model::factory('case')->select_overdue_last_week();
       echo json_encode(array("success" => true, "cases" => $cases->as_array()));
       break;
     case "getCasesOverdueLastWeekByVillage":
-      $cases = Model::factory('case')->select_overdue_last_week_by_village();
-      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      $villages = Model::factory('case')->select_overdue_last_week_by_village();
+      echo json_encode(array("success" => true, "villages" => $villages->as_array()));
       break;
     default:
       echo json_encode(array("success" => false, "errors" => array("Please use a valid API action")));

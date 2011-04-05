@@ -34,6 +34,12 @@ class Model_Case extends Model {
       ->execute();
   }
 
+  public function select_overdue() {
+    return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, c.phc_name
+      FROM cases c INNER JOIN appointments a ON c.id = a.case_id WHERE a.checked_in = 0')
+      ->execute();
+  }
+
   public function select_overdue_by_village() {
     return DB::query(Database::SELECT, 'SELECT c.village_name, COUNT(1) as total
       FROM cases c INNER JOIN appointments a ON c.id = a.case_id WHERE a.checked_in = 0
