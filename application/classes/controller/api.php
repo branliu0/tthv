@@ -232,6 +232,14 @@ class Controller_Api extends Controller {
       $villages = Model::factory('case')->select_with_appts_this_week_by_village();
       echo json_encode(array("success" => true, "villages" => $villages->as_array()));
       break;
+    case "getCasesNextWeek":
+      $cases = Model::factory('case')->select_with_appts_next_week();
+      echo json_encode(array("success" => true, "cases" => $cases->as_array()));
+      break;
+    case "getCasesNextWeekByVillage":
+      $villages = Model::factory('case')->select_with_appts_next_week_by_village();
+      echo json_encode(array("success" => true, "villages" => $villages->as_array()));
+      break;
     case "getCasesOverdueLastWeek":
       $cases = Model::factory('case')->select_overdue_last_week();
       echo json_encode(array("success" => true, "cases" => $cases->as_array()));

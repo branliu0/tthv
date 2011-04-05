@@ -53,7 +53,7 @@ class Model_Case extends Model {
     $nextWeekTimestamp = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
     return DB::query(Database::SELECT, 'SELECT DISTINCT c.id, c.patient_name, c.village_name,
       c.phc_name FROM cases c INNER JOIN appointments a ON c.id=a.case_id
-      WHERE a.checked_in = 0 AND a.date > :today AND a.date < :nextWeek')
+      WHERE a.checked_in = 0 AND a.date >= :today AND a.date < :nextWeek')
       ->param(':today', $todayTimestamp)
       ->param(':nextWeek', $nextWeekTimestamp)
       ->execute();
@@ -65,9 +65,35 @@ class Model_Case extends Model {
     $nextWeekTimestamp = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
     return DB::query(Database::SELECT, 'SELECT c.village_name, COUNT(1) as total 
       FROM cases c INNER JOIN appointments a ON c.id=a.case_id WHERE a.checked_in = 0 
-      AND a.date > :today AND a.date < :nextWeek GROUP BY c.village_name')
+      AND a.date >= :today AND a.date < :nextWeek GROUP BY c.village_name')
       ->param(':today', $todayTimestamp)
       ->param(':nextWeek', $nextWeekTimestamp)
+      ->execute();
+  }
+
+  public function select_with_appts_next_week() {
+    $today = new DateTime("today");
+    $sevenDays = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
+    $fourteenDays = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
+    // Note that DateTime#add modifies the object.
+    return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, c.phc_name
+      FROM cases c INNER JOIN appointments a ON c.id=a.case_id WHERE
+      a.date >= :7days AND a.date < :14days')
+      ->param(':7days', $sevenDays)
+      ->param(':14days', $fourteenDays)
+      ->execute();
+  }
+
+  public function select_with_appts_next_week_by_village() {
+    $today = new DateTime("today");
+    $sevenDays = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
+    $fourteenDays = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
+    // Note that DateTime#add modifies the object.
+    return DB::query(Database::SELECT, 'SELECT c.village_name, COUNT(1) as total
+      FROM cases c INNER JOIN appointments a ON c.id=a.case_id WHERE
+      a.date >= :7days AND a.date < :14days GROUP BY c.village_name')
+      ->param(':7days', $sevenDays)
+      ->param(':14days', $fourteenDays)
       ->execute();
   }
 
