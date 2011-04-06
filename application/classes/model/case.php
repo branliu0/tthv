@@ -27,7 +27,7 @@ class Model_Case extends Model {
 
   public function select_with_appts_today() {
     return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, 
-      c.phc_name FROM cases c INNER JOIN appointments a
+      c.phc_name, a.date, a.treatment FROM cases c INNER JOIN appointments a
       ON c.id = a.case_id WHERE a.date = :today')
       ->param(':today', strtotime("today"))
       ->execute();
