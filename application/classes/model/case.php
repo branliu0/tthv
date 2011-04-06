@@ -34,8 +34,9 @@ class Model_Case extends Model {
   }
 
   public function select_overdue() {
-    return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, c.phc_name
-      FROM cases c INNER JOIN appointments a ON c.id = a.case_id WHERE a.checked_in = 0')
+    return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, c.phc_name, a.date
+      FROM cases c INNER JOIN appointments a ON c.id = a.case_id WHERE a.checked_in = 0
+      ORDER BY a.date ASC')
       ->execute();
   }
 
@@ -48,8 +49,9 @@ class Model_Case extends Model {
 
   public function select_with_appts_this_week() {
     return DB::query(Database::SELECT, 'SELECT DISTINCT c.id, c.patient_name, c.village_name,
-      c.phc_name FROM cases c INNER JOIN appointments a ON c.id=a.case_id
-      WHERE a.checked_in = 0 AND a.date >= :today AND a.date < :nextWeek')
+      c.phc_name, a.date FROM cases c INNER JOIN appointments a ON c.id=a.case_id
+      WHERE a.checked_in = 0 AND a.date >= :today AND a.date < :nextWeek
+      ORDER BY a.date ASC')
       ->param(':today', strtotime("today"))
       ->param(':nextWeek', strtotime("+1 week", strtotime("today")))
       ->execute();
@@ -65,9 +67,9 @@ class Model_Case extends Model {
   }
 
   public function select_with_appts_next_week() {
-    return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, c.phc_name
+    return DB::query(Database::SELECT, 'SELECT c.id, c.patient_name, c.village_name, c.phc_name, a.date
       FROM cases c INNER JOIN appointments a ON c.id=a.case_id WHERE
-      a.date >= :7days AND a.date < :14days')
+      a.date >= :7days AND a.date < :14days ORDER BY a.date ASC')
       ->param(':7days', strtotime("+1 week", strtotime("today")))
       ->param(':14days', strtotime("+2 weeks", strtotime("today")))
       ->execute();
@@ -84,8 +86,9 @@ class Model_Case extends Model {
 
   public function select_overdue_last_week() {
     return DB::query(Database::SELECT, 'SELECT DISTINCT c.id, c.patient_name, c.village_name,
-      c.phc_name FROM cases c INNER JOIN appointments a ON c.id=a.case_id
-      WHERE a.checked_in = 0 AND a.date < :today AND a.date > :lastWeek')
+      c.phc_name, a.date FROM cases c INNER JOIN appointments a ON c.id=a.case_id
+      WHERE a.checked_in = 0 AND a.date < :today AND a.date > :lastWeek
+      ORDER BY a.date ASC')
       ->param(':today', strtotime("today"))
       ->param(':lastWeek', strtotime("-1 week", strtotime("today")))
       ->execute();
