@@ -33,7 +33,8 @@ class Controller_Api extends Controller {
       // Patient Name | patient_name | not_empty
       // Village Name | village_name | not_empty
       // Primary Health Center Name | phc_name | not_empty, alphanum
-      // Mobile number | mobile | 10 digits
+      // Mobile number | mobile | not_empty, 10 digits
+      // Clinic Access | clinic_access | not_empty,yes|no
     case "addCase":
       $post = Validate::factory($_POST);
       $post->filter(TRUE, 'trim');
@@ -42,11 +43,13 @@ class Controller_Api extends Controller {
       $post->rule('phc_name', 'not_empty');
       $post->rule('phc_name', 'alpha_numeric');
       $post->rule('mobile', 'not_empty');
-      $post->rule('mobile', 'numeric');
+      $post->rule('mobile', 'digit');
       $post->rule('mobile', 'exact_length', array(10));
+      $post->rule('clinic_access', 'not_empty');
+      $post->rule('clinic_access', 'regex', array('/yes|no/'));
 
       if ($post->check()) {
-        list($case_id, $num_rows) = Model::factory('case')->add($post->as_array());
+        list($case_id, $num_rows) = Model::factory('case')->add_case($post->as_array());
         echo json_encode(array("success" => true, "case_id" => $case_id));
       }
       else {
@@ -91,13 +94,17 @@ class Controller_Api extends Controller {
       $post->rule('date', 'not_empty');
       $post->rule('case_id', 'not_empty');
       $post->rule('date', 'date');
-      $post->rule('message', 'not_empty');
-      $post->rule('message', 'max_length', array(150));
+      $post->rule('treatment', 'not_empty');
+      $post->rule('treatment', 'alpha_dash');
+      $post->rule('treatment', 'max_length', array(150));
 
       if ($post->check()) {
         $appts = Model::factory('appointment');
-        $_POST['date'] = strtotime($_POST['date']);
-        list($id, $num_rows) = $appts->add_appointment($_POST);
+        $post['date'] = strtotime($post['date']);
+        if (!isset($post['message'])) {
+          $post['message'] = $appts->generateMessage($post['child_name'], $post['treatment'], $post['date']);
+        }
+        list($id, $num_rows) = $appts->add_appointment($post->as_array());
         echo json_encode(array("success" => true, "id" => $id));
       }
       else {
@@ -114,8 +121,10 @@ class Controller_Api extends Controller {
       $post->rule('phc_name', 'not_empty');
       $post->rule('phc_name', 'alpha_numeric');
       $post->rule('mobile', 'not_empty');
-      $post->rule('mobile', 'numeric');
+      $post->rule('mobile', 'digit');
       $post->rule('mobile', 'exact_length', array(10));
+      $post->rule('clinic_access', 'not_empty');
+      $post->rule('clinic_access', 'regex', array('/yes|no/'));
 
       if (!$post->check()) {
         $errors = $post->errors('validate');
@@ -146,7 +155,6 @@ class Controller_Api extends Controller {
           $post->filter(TRUE, 'trim');
           $post->rule('child_name', 'not_empty');
           $post->rule('date', 'not_empty');
-          $post->rule('case_id', 'not_empty');
           $post->rule('date', 'date');
           $post->rule('message', 'not_empty');
           $post->rule('message', 'max_length', array(150));
@@ -170,6 +178,11 @@ class Controller_Api extends Controller {
       }
       if (isset($post['appointments'])) {
         foreach(json_decode($post['appointments']) as $appt) {
+          $appt['case_id'] = $case_id;
+          $appt['date'] = strtotime($appt['date']);
+          if (!isset($post['message'])) {
+            $appt['message'] = $apptModel->generateMessage($appt['child_name'], $appt['treatment'], $appt['date']);
+        }
           $apptModel->add_appointment($appt);
         }
       }
@@ -252,5 +265,4 @@ class Controller_Api extends Controller {
       echo json_encode(array("success" => false, "errors" => array("Please use a valid API action")));
     }
   }
-
 }

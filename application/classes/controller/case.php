@@ -69,6 +69,10 @@ class Controller_Case extends Controller_Template {
 		$post->rule('mobile', 'numeric');
 		$post->rule('mobile', 'exact_length', array(10));
 
+    if (!isset($post['clinic_access'])) {
+      $post['clinic_access'] = "no";
+    }
+
 		if ($post->check()) {
 			$case = Model::factory('case');
 			list($case_id, $affected_rows) = $case->add_case($post->as_array());

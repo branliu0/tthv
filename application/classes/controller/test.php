@@ -10,8 +10,18 @@ class Controller_Test extends Controller_Template {
     $today = new DateTime("today");
     $sevenDays = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
     $fourteenDays = $today->add(DateInterval::createFromDateString("1 week"))->getTimestamp();
-    echo date("m-d-Y", $sevenDays) . "\n";
-    echo date("m-d-Y", $fourteenDays) . "\n";
+    echo $sevenDays . "\n";
+    echo strtotime("+1 week", strtotime("today")) . "\n";
+
+    echo strtotime("yesterday");
+
+    // $yest = new DateTime("yesterday");
+    // echo $yest->getTimestamp() . "\n";
+    // echo strtotime("yesterday") . "\n";
+    // echo strtotime("-1 days") . "\n";
+
+    // echo strtotime("now") . "\n";
+    // echo strtotime("today") . "\n";
   }
 
-} // End Welcome
+}

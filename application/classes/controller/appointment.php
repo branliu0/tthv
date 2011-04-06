@@ -12,17 +12,17 @@ class Controller_Appointment extends Controller_Template {
     $post->rule('child_name', 'not_empty');
     $post->rule('date', 'not_empty');
     $post->rule('date', 'date');
-    $post->rule('message', 'not_empty');
-    $post->rule('message', 'max_length', array(150));
+    $post->rule('treatment', 'not_empty');
+    $post->rule('treatment', 'alpha_dash');
+    $post->rule('treatment', 'max_length', array(150));
 
     if ($post->check()) {
       $appts = Model::factory('appointment');
-      $data['child_name'] = $post['child_name'];
-      $data['message'] = $post['message'];
-      $data['date'] = new DateTime($post['date']);
-      $data['date'] = $data['date']->getTimestamp();
-      $data['case_id'] = $case_id;
-      $appts->add_appointment($data);
+      $post['case_id'] = $case_id;
+      $post['date'] = strtotime($post['date']);
+      $post['message'] = $appts->generateMessage($post['child_name'], $post['treatment'], $post['date']);
+      print_r($post->as_array());
+      $appts->add_appointment($post->as_array());
 
       $this->request->redirect("case/view/{$case_id}");
       return;

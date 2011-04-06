@@ -18,8 +18,8 @@
 	echo form::label('child_name', 'Child Name');
 	echo form::input('child_name', $post['child_name']);
 
-	echo form::label('message', 'Custom Message');
-	echo form::input('message', $post['message']);
+	echo form::label('treatment', 'Treatment');
+	echo form::input('treatment', $post['treatment']);
 
 	echo form::label('date', 'Appointment Date');
 	echo form::input('date', $post['date'], array("id" => "date"));
