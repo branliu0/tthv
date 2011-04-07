@@ -48,13 +48,13 @@ a:hover {
 #wrapper {
 	margin: 0 auto;
 	padding: 0;
+  width: 960px;
 }
 
 /* Header */
 
 #header {
 	overflow: hidden;
-	width: 1000px;
 	height: 50px;
 	margin: 0px auto 0px auto;
 /*	background: url(images/img01.jpg) no-repeat right top; */
@@ -186,7 +186,6 @@ a:hover {
 /* Page */
 
 #page {
-	width: 960px;
 	margin: 0 auto;
 	padding: 40px 0px 0px 0px;
 	border-top: 1px solid #BBBBBB;
@@ -327,7 +326,7 @@ a:hover {
 /* Footer */
 
 #footer {
-	width: 1000px;
+  width: 960px;
 	height: 50px;
 	margin: 0 auto;
 	padding: 0px 0 15px 0;
