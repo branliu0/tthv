@@ -15,6 +15,7 @@ class Controller_Test extends Controller_Template {
 
     echo strtotime("yesterday");
 
+    $appts = Model::factory('appointment')->select_by_village_name($post['village_name']);
     // $yest = new DateTime("yesterday");
     // echo $yest->getTimestamp() . "\n";
     // echo strtotime("yesterday") . "\n";

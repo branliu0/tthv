@@ -5,8 +5,8 @@
 <table class="view-table">
 	<thead><tr>
 		<th>Patient Name</th>
-		<th>PHC</th>
-		<th>Village</th>
+		<th>Primary Health Center</th>
+		<th>Village Name</th>
 	</tr></thead>
 	<tbody>
 <?php foreach($cases as $case): ?>
@@ -19,3 +19,43 @@
 	</tbody>
 </table>
 <?php endif; ?>
+
+<h2>Appointments Overdue Last Week</h2>
+<table cellspacing="0" class="view-table">
+  <thead>
+    <tr>
+      <th>Patient Name</th>
+      <th>Primary Health Center</th>
+      <th>Village Name</th>
+    </tr>
+  </thead>
+  <tbody>
+<?php foreach($overdue as $case): ?>
+    <tr>
+      <td><?php echo html::anchor('case/view/' . $case['id'], $case['patient_name']); ?></td>
+      <td><?php echo $case['phc_name']; ?></td>
+      <td><?php echo $case['village_name']; ?></td>
+    </tr>
+  </tbody>
+<?php endforeach; ?>
+</table>
+
+<h2>Appointments Upcoming This Week</h2>
+<table cellspacing="0" class="view-table">
+  <thead>
+    <tr>
+      <th>Patient Name</th>
+      <th>Primary Health Center</th>
+      <th>Village Name</th>
+    </tr>
+  </thead>
+  <tbody>
+<?php foreach($thisWeek as $case): ?>
+    <tr>
+      <td><?php echo html::anchor('case/view/' . $case['id'], $case['patient_name']); ?></td>
+      <td><?php echo $case['phc_name']; ?></td>
+      <td><?php echo $case['village_name']; ?></td>
+    </tr>
+  </tbody>
+<?php endforeach; ?>
+</table>

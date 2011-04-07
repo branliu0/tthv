@@ -4,30 +4,37 @@ class Model_Appointment extends Model {
 
 	const MESSAGE = "%child_name% has an appointment for %treatment% on %date%";
 	private static $child_appts = array(
+    array(
+      "treatment" => "Prenatal Checkup",
+      "interval" => "-7 months"
+    ),
+    array(
+      "treatment" => "Prenatal Checkup",
+      "interval" => "-4 months"
+    ),
+    array(
+      "treatment" => "Prenatal Checkup",
+      "interval" => "-1 month"
+    ),
 		array(
 			"treatment" => "Child Birth",
-			"interval" => "0 weeks",
-			"after" => true
+			"interval" => "0 weeks"
 		),
 		array(
 			"treatment" => "Oral Polio, DPT, Hepatitis B",
-			"interval" => "6 weeks",
-			"after" => true
+			"interval" => "6 weeks"
     ),
     array(
       "treatment" => "Oral Polio, DPT, Hepatitis B",
-      "interval" => "10 weeks",
-      "after" => true
+      "interval" => "10 weeks"
     ),
     array(
       "treatment" => "Oral Polio, DPT, Hepatitis B",
-      "interval" => "14 weeks",
-      "after" => true
+      "interval" => "14 weeks"
     ),
     array(
       "treatment" => "Measles",
-      "interval" => "10 months",
-      "after" => true
+      "interval" => "10 months"
     )
 	);
 
@@ -42,25 +49,25 @@ class Model_Appointment extends Model {
 		$data['child_name'] = $post['child_name'];
 		$data['case_id'] = $post['case_id'];
 
-		$now = new DateTime("now");
+		$now = strtotime("now");
 		foreach(self::$child_appts as $appt) {
-			$birth_date = new DateTime($post['birth_date']);
+			// $birth_date = new DateTime($post['birth_date']);
 
-      // Calculate the date of the appointment
-			if($appt['after']) {
-				$data['date'] = $birth_date->add(DateInterval::createFromDateString($appt['interval']));
-			}
-			else {
-				$data['date'] = $birth_date->sub(DateInterval::createFromDateString($appt['interval']));
-			}
+      // // Calculate the date of the appointment
+			// if($appt['after']) {
+			// 	$data['date'] = $birth_date->add(DateInterval::createFromDateString($appt['interval']));
+			// }
+			// else {
+			// 	$data['date'] = $birth_date->sub(DateInterval::createFromDateString($appt['interval']));
+			// }
 
+      $data['date'] = strtotime($appt['interval'], strtotime($post['birth_date']));
 			// Don't add appointments that are for the past.
 			if($data['date'] < $now) {
 				continue;
 			}
 
       $data['treatment'] = $appt['treatment'];
-			$data['date'] = $data['date']->getTimestamp();
 			$data['message'] = $this->generateMessage($data['child_name'], $data['treatment'], $data['date']);
 			$this->add_appointment($data);
 		}
@@ -106,7 +113,7 @@ class Model_Appointment extends Model {
   public function check_in($id) {
     return DB::query(Database::UPDATE, 'UPDATE appointments SET checked_in=:now WHERE id=:id')
       ->param(':id', $id)
-      ->param(':now', date())
+      ->param(':now', time())
       ->execute();
   }
 }

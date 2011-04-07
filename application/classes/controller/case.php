@@ -87,12 +87,15 @@ class Controller_Case extends Controller_Template {
 	}
 
   public function action_today() {
-    $today = new DateTime("today");
-    // echo $today->getTimestamp();
-    // print_r(Model::factory('case')->select_with_appts_today()->as_array());
     $cases = Model::factory('case')->select_with_appts_today();
+    $caseModel = Model::factory('case');
+    $cases = $caseModel->select_with_appts_today();
+    $overdue = $caseModel->select_overdue_last_week();
+    $thisWeek = $caseModel->select_with_appts_this_week();
     $this->template->content = View::factory('case/today')
-      ->set('cases', $cases);
+      ->bind('cases', $cases)
+      ->bind('overdue', $overdue)
+      ->bind('thisWeek', $thisWeek);
   }
 
 }
