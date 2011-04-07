@@ -192,7 +192,7 @@ class Controller_Api extends Controller {
       // Required fields:
       // Description | field_name | required_attributes
       // Patient Case Id | case_id | not_empty, digit
-    case "getAppointments":
+    case "getAppointmentsByCaseId":
       $post = Validate::factory($_POST);
       $post->filter(TRUE, 'trim');
       $post->rule('case_id', 'not_empty');
