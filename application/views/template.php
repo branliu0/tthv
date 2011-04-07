@@ -3,7 +3,7 @@
 <head>
 	<meta name="keywords" content="medicare, healthcare, sms" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>RemindaVax :: Mobile Healthcare Solution</title>
+	<title>Remindavax :: Mobile Healthcare Solution</title>
 	<?php echo html::style('css/style.css', array('media' => 'screen')); ?>
 	<?php echo html::style('css/my.css', array('media' => 'screen')); ?>
 	<?php echo html::style('css/date.css', array('media' => 'screen')); ?>
