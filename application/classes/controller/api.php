@@ -20,7 +20,7 @@ class Controller_Api extends Controller {
 
       if ($post->check()) {
         $cases = Model::factory('case')->select_by_village_name($post['village_name']);
-        return json_encode(array("success" => true, "cases" => $cases->as_array()));
+        echo json_encode(array("success" => true, "cases" => $cases->as_array()));
       }
       else {
         $errors = $post->errors('validate');
