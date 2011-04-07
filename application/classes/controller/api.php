@@ -211,6 +211,20 @@ class Controller_Api extends Controller {
       // Required fields:
       // Description | field_name | required_attributes
       // Appointment Id | id | not_empty, digit
+    case "getAppointmentsByVillageName":
+      $post = Validate::factory($_POST);
+      $post->filter(TRUE, 'trim');
+      $post->rule('village_name', 'not_empty');
+
+      if ($post->check()) {
+        $appts = Model::factory('appointment')->select_by_village_name($post['village_name']);
+        echo json_encode(array("success" => true, "appointments" => $appts));
+      }
+      else {
+        $errors = $post->errors('validate');
+        echo json_encode(array("success" => false, "errors" => $errors));
+      }
+      break;
     case "checkInAppointment":
       $post = Validate::factory($_POST);
       $post->filter(TRUE, 'trim');

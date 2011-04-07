@@ -83,6 +83,13 @@ class Model_Appointment extends Model {
 			->execute();
 	}
 
+  public function select_by_village_name($village) {
+    return DB::query(Database::SELECT, 'SELECT * FROM appointments a INNER JOIN cases c
+      ON a.case_id=c.id WHERE c.village_name = :village ORDER BY a.date ASC')
+      ->param(':village', $village)
+      ->execute();
+  }
+
   public function select_all() {
     return DB::query(Database::SELECT, 'SELECT * FROM appointments 
       WHERE date >= :today ORDER BY date ASC')
