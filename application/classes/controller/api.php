@@ -218,7 +218,7 @@ class Controller_Api extends Controller {
 
       if ($post->check()) {
         $appts = Model::factory('appointment')->select_by_village_name($post['village_name']);
-        echo json_encode(array("success" => true, "appointments" => $appts));
+        echo json_encode(array("success" => true, "appointments" => $appts->as_array()));
       }
       else {
         $errors = $post->errors('validate');
