@@ -25,4 +25,11 @@ class Controller_Test extends Controller_Template {
     // echo strtotime("today") . "\n";
   }
 
+  public function action_api() {
+    $curl =<<<EOD
+curl --user tthv:tthv -d 'action=addCaseWithChildrenAndAppointments&village_name=Brandon&phc_name=Brandon&mobile=1234512345&clinic_access=yes&patient_name=Brandon&children=[{"child_name": "Brandon Liu", "birth_date": "03/26/2012"}]' http://remindavax.org/api/
+EOD;
+    exec($curl, $output);
+    echo implode("\n", $output);
+  }
 }

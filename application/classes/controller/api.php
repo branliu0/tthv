@@ -72,7 +72,7 @@ class Controller_Api extends Controller {
       $post->rule('birth_date', 'date');
 
       if ($post->check()) {
-        Model::factory('appointment')->add_child($_POST);
+        Model::factory('appointment')->add_child($post->as_array());
         echo json_encode(array("success" => true));
       }
       else {
@@ -129,39 +129,44 @@ class Controller_Api extends Controller {
       if (!$post->check()) {
         $errors = $post->errors('validate');
         echo json_encode(array("success" => false, "errors" => $errors));
+        return;
       }
 
       // Check children data
-      if (isset($post['children'])) {
-        foreach(json_decode($post['children']) as $child) {
-          $post = Validate::factory($child);
-          $post->filter(TRUE, 'trim');
-          $post->rule('child_name', 'not_empty');
-          $post->rule('birth_date', 'not_empty');
-          $post->rule('case_id', 'not_empty');
-          $post->rule('birth_date', 'date');
+      if (isset($_POST['children'])) {
+        // echo $_POST['children'];
+        // print_r(json_decode($_POST['children'], true));
+        // break;
+        foreach(json_decode($_POST['children'], true) as $child) {
+          $childPost = Validate::factory($child);
+          $childPost->filter(TRUE, 'trim');
+          $childPost->rule('child_name', 'not_empty');
+          $childPost->rule('birth_date', 'not_empty');
+          $childPost->rule('birth_date', 'date');
 
-          if (!$post->check()) {
-            $errors = $post->errors('validate');
+          if (!$childPost->check()) {
+            $errors = $childPost->errors('validate');
             echo json_encode(array("success" => false, "errors" => $errors));
+            return;
           }
         }
       }
       
       // Check appointment data
-      if (isset($post['appointments'])) {
-        foreach(json_decode($post['appointments']) as $appt) {
-          $post = Validate::factory($appt);
-          $post->filter(TRUE, 'trim');
-          $post->rule('child_name', 'not_empty');
-          $post->rule('date', 'not_empty');
-          $post->rule('date', 'date');
-          $post->rule('message', 'not_empty');
-          $post->rule('message', 'max_length', array(150));
+      if (isset($_POST['appointments'])) {
+        foreach(json_decode($_POST['appointments'], true) as $appt) {
+          $apptPost = Validate::factory($appt);
+          $apptPost->filter(TRUE, 'trim');
+          $apptPost->rule('child_name', 'not_empty');
+          $apptPost->rule('date', 'not_empty');
+          $apptPost->rule('date', 'date');
+          $apptPost->rule('message', 'not_empty');
+          $apptPost->rule('message', 'max_length', array(150));
 
-          if (!$post->check()) {
-            $errors = $post->errors('validate');
+          if (!$apptPost->check()) {
+            $errors = $apptPost->errors('validate');
             echo json_encode(array("success" => false, "errors" => $errors));
+            return;
           }
         }
       }
@@ -169,15 +174,16 @@ class Controller_Api extends Controller {
       // All validation has passed. Let's insert the data!
       $caseModel = Model::factory('case');
       $apptModel = Model::factory('appointment');
-      list($case_id, $num_rows) = $caseModel->add_case($post);
+      list($case_id, $num_rows) = $caseModel->add_case($post->as_array());
 
-      if (isset($post['children'])) {
-        foreach(json_decode($post['children']) as $child) {
+      if (isset($_POST['children'])) {
+        foreach(json_decode($_POST['children'], true) as $child) {
+          $child['case_id'] = $case_id;
           $apptModel->add_child($child);
         }
       }
-      if (isset($post['appointments'])) {
-        foreach(json_decode($post['appointments']) as $appt) {
+      if (isset($_POST['appointments'])) {
+        foreach(json_decode($_POST['appointments'], true) as $appt) {
           $appt['case_id'] = $case_id;
           $appt['date'] = strtotime($appt['date']);
           if (!isset($post['message'])) {
