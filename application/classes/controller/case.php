@@ -68,6 +68,7 @@ class Controller_Case extends Controller_Template {
 		$post->rule('mobile', 'not_empty');
 		$post->rule('mobile', 'numeric');
 		$post->rule('mobile', 'exact_length', array(10));
+    $post->rule('location', 'max_length', array(255));
 
     if (!isset($post['clinic_access'])) {
       $post['clinic_access'] = "no";

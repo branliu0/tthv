@@ -27,6 +27,9 @@
 	echo form::label('mobile', 'Mobile Number (10 digits)');
 	echo form::input('mobile', $post['mobile']);
 
+  echo form::label('location', 'Location');
+  echo form::input('location', $post['location']);
+
   echo form::label('clinic_access', 'Can access the clinic?');
   echo form::checkbox('clinic_access', 'yes', true);
 

@@ -47,6 +47,7 @@ class Controller_Api extends Controller {
       $post->rule('mobile', 'exact_length', array(10));
       $post->rule('clinic_access', 'not_empty');
       $post->rule('clinic_access', 'regex', array('/yes|no/'));
+      $post->rule('location', 'max_length', array(255));
 
       if ($post->check()) {
         list($case_id, $num_rows) = Model::factory('case')->add_case($post->as_array());
@@ -125,6 +126,7 @@ class Controller_Api extends Controller {
       $post->rule('mobile', 'exact_length', array(10));
       $post->rule('clinic_access', 'not_empty');
       $post->rule('clinic_access', 'regex', array('/yes|no/'));
+      $post->rule('location', 'max_length', array(255));
 
       if (!$post->check()) {
         $errors = $post->errors('validate');

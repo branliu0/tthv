@@ -7,6 +7,7 @@
 		<label>Primary Health Center: <b><?php echo $case['phc_name']; ?></b></label>
 		<label>Mobile: <b><?php echo $case['mobile']; ?></b></label>
     <label>Clinic Access: <b><?php echo ucfirst($case['clinic_access']); ?></b></label>
+    <label>Location: <b><?php echo $case['location']; ?></b></label>
 	</div>
 
 	<div class="entry">
