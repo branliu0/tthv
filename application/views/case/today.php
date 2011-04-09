@@ -7,6 +7,7 @@
 		<th>Patient Name</th>
 		<th>Primary Health Center</th>
 		<th>Village Name</th>
+		<th>Treatment</th>
 	</tr></thead>
 	<tbody>
 <?php foreach($cases as $case): ?>
@@ -14,6 +15,7 @@
       <td><?php echo html::anchor('case/view/' . $case['id'], $case['patient_name']); ?></td>
       <td><?php echo $case['phc_name']; ?></td>
       <td><?php echo $case['village_name']; ?></td>
+      <td><?php echo $case['treatment']; ?></td>
     </tr>
 <?php endforeach; ?>
 	</tbody>
@@ -27,6 +29,8 @@
       <th>Patient Name</th>
       <th>Primary Health Center</th>
       <th>Village Name</th>
+      <th>Treatment</th>
+      <th>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -35,6 +39,8 @@
       <td><?php echo html::anchor('case/view/' . $case['id'], $case['patient_name']); ?></td>
       <td><?php echo $case['phc_name']; ?></td>
       <td><?php echo $case['village_name']; ?></td>
+      <td><?php echo $case['treatment']; ?></td>
+      <td><?php echo strftime("%Y-%m-%d", $case['date']); ?></td>
     </tr>
   </tbody>
 <?php endforeach; ?>
@@ -47,6 +53,8 @@
       <th>Patient Name</th>
       <th>Primary Health Center</th>
       <th>Village Name</th>
+      <th>Treatment</th>
+      <th>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -55,6 +63,8 @@
       <td><?php echo html::anchor('case/view/' . $case['id'], $case['patient_name']); ?></td>
       <td><?php echo $case['phc_name']; ?></td>
       <td><?php echo $case['village_name']; ?></td>
+      <td><?php echo $case['treatment']; ?></td>
+      <td><?php echo strftime("%Y-%m-%d", $case['date']); ?></td>
     </tr>
   </tbody>
 <?php endforeach; ?>

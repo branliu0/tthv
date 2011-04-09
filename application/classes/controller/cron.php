@@ -2,7 +2,7 @@
 
 class Controller_Cron extends Controller {
   public function action_index() {
-    $appts = Model::factory('appointment')->select_all();
+    $appts = Model::factory('appointment')->select_all_upcoming();
 
     $start = new DateTime();
     $start->add(DateInterval::createFromDateString('3 days'));

@@ -41,6 +41,8 @@
   <h3 class="title">Upcoming Appointments <?php echo html::anchor("appointment/add/{$case['id']}", html::image('images/add.png',
     array('height' => '20px'))); ?></h3>
 
+<?php echo html::anchor("appointment/all/{$case['id']}", "View all appointments"); ?>
+
 		<table id="appointments" class="view-table">
 			<thead><tr>
 				<th>Date</th>

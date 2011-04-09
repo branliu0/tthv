@@ -22,7 +22,8 @@ class Model_Case extends Model {
     // return DB::query(Database::SELECT, 'SELECT TOP(1) * FROM cases WHERE id=:id')
     return DB::query(Database::SELECT, 'SELECT * FROM cases WHERE id=:id LIMIT 1')
       ->param(':id', $id)
-      ->execute();
+      ->execute()
+      ->current();
 	}
 
   public function select_with_appts_today() {

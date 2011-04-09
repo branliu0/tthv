@@ -83,12 +83,19 @@ class Model_Appointment extends Model {
       ->execute();
   }
 
-	public function select_by_case_id($id) {
+	public function select_upcoming_by_case_id($id) {
 		return DB::query(Database::SELECT, 'SELECT * FROM appointments WHERE case_id=:case_id AND date >= :today ORDER BY date ASC')
 			->param(':case_id', $id)
       ->param(':today', strtotime("today"))
 			->execute();
 	}
+
+  public function select_by_case_id($id) {
+    return DB::query(Database::SELECT, 'SELECT * FROM appointments 
+      WHERE case_id=:case_id ORDER BY date ASC')
+			->param(':case_id', $id)
+			->execute();
+  }
 
   public function select_by_village_name($village) {
     return DB::query(Database::SELECT, 'SELECT * FROM appointments a INNER JOIN cases c
@@ -97,7 +104,7 @@ class Model_Appointment extends Model {
       ->execute();
   }
 
-  public function select_all() {
+  public function select_all_upcoming() {
     return DB::query(Database::SELECT, 'SELECT * FROM appointments 
       WHERE date >= :today ORDER BY date ASC')
       ->param(':today', strtotime("today"))

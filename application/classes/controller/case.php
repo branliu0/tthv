@@ -35,7 +35,7 @@ class Controller_Case extends Controller_Template {
 		$errors = $post->errors('validate');
 
 		$case = $cases->select_by_id($id);
-		$appointments = $appts->select_by_case_id($id);
+		$appointments = $appts->select_upcoming_by_case_id($id);
 
     $checkedIn = -1;
     if ($appointments->count() != 0) {
@@ -48,7 +48,7 @@ class Controller_Case extends Controller_Template {
     }
 
 		$this->template->content = View::factory('case/view')
-			->set('case', $case->current())
+			->bind('case', $case)
       ->bind('checkedIn', $checkedIn)
 			->bind('appts', $appointments)
 			->bind('post', $post)
@@ -98,5 +98,4 @@ class Controller_Case extends Controller_Template {
       ->bind('overdue', $overdue)
       ->bind('thisWeek', $thisWeek);
   }
-
 }

@@ -30,12 +30,35 @@ class Controller_Appointment extends Controller_Template {
 
     $errors = $post->errors('validate');
 
-    $case = Model::factory('case')->select_by_id($case_id)->current();
+    $case = Model::factory('case')->select_by_id($case_id);
 
     $this->template->content = View::factory('appointment/add')
       ->bind('post', $post)
       ->bind('errors', $errors)
       ->bind('case', $case);
     
+  }
+
+  public function action_all($case_id) {
+    $case = Model::factory('case')->select_by_id($case_id);
+    $appts = Model::factory('appointment')->select_by_case_id($case_id);
+    $apptArr = $appts->as_array();
+    $now = time();
+    foreach ($apptArr as &$appt) {
+      if ($appt['date'] > $now) {
+        $appt['status'] = "Upcoming";
+      }
+      else {
+        if ($appt['checked_in'] == 0) {
+          $appt['status'] = "Overdue";
+        }
+        else {
+          $appt['status'] = "Treated on " . strftime("%Y-%m-%d %H:%M:%S", $appt['date']);
+        }
+      }
+    }
+    $this->template->content = View::factory('appointment/all')
+      ->bind('case', $case)
+      ->bind('appts', $apptArr);
   }
 }
