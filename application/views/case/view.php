@@ -47,13 +47,13 @@
 			<thead><tr>
 				<th>Date</th>
 				<th>Child Name</th>
-				<th>Message</th>
+				<th>Treatment</th>
 			</tr></thead>
 			<tbody>
 			<?php foreach($appts as $appt): ?>
         <tr appt_id="<?php echo $appt['id']; ?>"><td><?php echo date('M j, Y', $appt['date']); ?></td>
 				<td><?php echo $appt['child_name']; ?></td>
-				<td><?php echo $appt['message']; ?></td>
+				<td><?php echo $appt['treatment']; ?></td>
         <td><a href="#" onclick="return false;" appt_id="<?php echo $appt['id']; ?>"><?php echo html::image('images/delete.png', array('width' => '20px')); ?></a></td>
         <td><span class="sure" appt_id="<?php echo $appt['id']; ?>" style="display:none;">Sure? <span class="yes" style="font-weight: bold;">Yes</span> <span class="no" style="font-weight: bold;">No</span></span></td></tr>
 			<?php endforeach; ?>

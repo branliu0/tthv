@@ -30,7 +30,7 @@
       <th>Primary Health Center</th>
       <th>Village Name</th>
       <th>Treatment</th>
-      <th>Date</th>
+      <th NOWRAP>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -40,7 +40,7 @@
       <td><?php echo $case['phc_name']; ?></td>
       <td><?php echo $case['village_name']; ?></td>
       <td><?php echo $case['treatment']; ?></td>
-      <td><?php echo strftime("%Y-%m-%d", $case['date']); ?></td>
+      <td NOWRAP><?php echo strftime("%Y-%m-%d", $case['date']); ?></td>
     </tr>
   </tbody>
 <?php endforeach; ?>
@@ -64,7 +64,7 @@
       <td><?php echo $case['phc_name']; ?></td>
       <td><?php echo $case['village_name']; ?></td>
       <td><?php echo $case['treatment']; ?></td>
-      <td><?php echo strftime("%Y-%m-%d", $case['date']); ?></td>
+      <td NOWRAP><?php echo strftime("%Y-%m-%d", $case['date']); ?></td>
     </tr>
   </tbody>
 <?php endforeach; ?>

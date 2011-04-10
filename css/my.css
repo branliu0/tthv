@@ -79,7 +79,6 @@ label {
 }
 
 .view-table{
-    width: 700px;
     margin-bottom: 25px;
 }
 .view-table th {
@@ -88,6 +87,7 @@ label {
     font-size:14px;
     font-weight:normal;
     padding:10px 8px;
+    text-align: center;
 }
 
 .view-table td {
